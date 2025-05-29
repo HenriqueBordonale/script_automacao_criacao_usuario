@@ -6,6 +6,9 @@ param (
     [string]$nome,
     [string]$sobrenome
 )
+
+$dataHoje = (Get-Date).ToString("ddMMyyyy")
+
 Write-Output "Credenciais que pegou: $OrigUser"
 Write-Output "Credenciais que pegou: $NewUser"
 # Obter as propriedades do usuário modelo
@@ -14,7 +17,6 @@ $User = Get-ADUser -Identity $OrigUser -Properties MemberOf, Title, Department
 # Extrair a OU do usuário modelo
 $UserOU = $User.DistinguishedName -replace "^CN=[^,]+,", ""
 Write-Output "Usuario modelo esta na OU: $UserOU"
-
 # Criar novo usuário na mesma OU
 New-ADUser -Name "$nome $sobrenome" `
            -SamAccountName $NewUser `
@@ -28,7 +30,7 @@ New-ADUser -Name "$nome $sobrenome" `
            -GivenName $nome `
            -Surname $sobrenome `
            -DisplayName "$nome $sobrenome" `
-           -AccountPassword (ConvertTo-SecureString "SenhaForte123!" -AsPlainText -Force)
+           -AccountPassword (ConvertTo-SecureString "$dataHoje" -AsPlainText -Force)
            
 Write-Output "Usuario '$NewUser' criado na mesma OU de '$OrigUser'"
 
@@ -39,3 +41,4 @@ foreach ($Group in $User.MemberOf) {
 }
 
 Write-Output "Processo concluido! Usuario '$NewUser' copiado com sucesso."
+Write-Output "Usuário $NewUser com a senha $dataHoje criados com sucesso!"

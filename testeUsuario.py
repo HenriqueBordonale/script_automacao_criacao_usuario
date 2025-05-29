@@ -59,3 +59,10 @@ if (confirmarUsuario == "s"):
     capture_output=True,
     text=True
 )
+
+print("Resultado da execução:")
+print(process.stdout)
+print(process.stderr)
+
+processPy = subprocess.run(["python",
+        "D:\documents\Automacao_Email\Automatização_Email.py", username])
