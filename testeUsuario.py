@@ -1,3 +1,5 @@
+import subprocess
+
 nome = input ("Insira o nome do Colaborador/Docente: ").lower()
 codigoFun = input ("Insira o codigo funcional: ")
 userACopiar = input("Insira um usuário a copiar: ")
@@ -47,6 +49,15 @@ print(f"Usuário: {username}")
 print(f"Endereço de E-mail: {email}")
 print(f"Código Funcional: {codigoFun}")
 print(f"Usuário a copiar: {userACopiar}")
-input("Deseja confirmar a criação? [S/N]")
+confirmCriacao = input("Deseja confirmar a criação? [S/N]").lower()
 
+if (confirmarUsuario == "s"):
+    process = subprocess.run(
+    ["powershell", "-File", "ChamarCriacao.ps1", "-OrigUser", userACopiar, "-NewUser", username],
+    capture_output=True,
+    text=True
+)
 
+print("Resultado da execução:")
+print(process.stdout)
+print(process.stderr)
