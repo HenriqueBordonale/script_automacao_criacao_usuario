@@ -2,7 +2,7 @@ import subprocess
 
 nome = input ("Insira o nome do Colaborador/Docente: ").lower()
 codigoFun = input ("Insira o codigo funcional: ")
-userACopiar = input("Insira um usuário a copiar: ")
+userACopiar = input("Insira um usuário a copiar: ").lower()
 
 nomeSeparado = nome.strip().split()
 primeiroNome = nomeSeparado[0]
@@ -41,7 +41,8 @@ confirmarUsuario = input(f"Deseja manter o usuário: {username}? [S/N]")
 if(confirmarUsuario == "n"):
     username = input("Insira o usuário desejado: ")
 
-nomeCompleto = identificar_sobrenome(nome)
+nomeCompleto = identificar_sobrenome(nome).split()
+sobrenome = ' '.join(nomeCompleto[1:]) if len(nomeCompleto) > 1 else ''
 email = username + "@unaerp.br"
 print("-----------------------------")
 print(f"Nome Completo: {nomeCompleto}")
@@ -51,13 +52,10 @@ print(f"Código Funcional: {codigoFun}")
 print(f"Usuário a copiar: {userACopiar}")
 confirmCriacao = input("Deseja confirmar a criação? [S/N]").lower()
 
+
 if (confirmarUsuario == "s"):
     process = subprocess.run(
-    ["powershell", "-File", "ChamarCriacao.ps1", "-OrigUser", userACopiar, "-NewUser", username],
+    ["powershell", "-File", "ChamarCriacao.ps1", "-OrigUser", userACopiar, "-NewUser", username,"-codigo", codigoFun, "-email", email, "-nome", nomeCompleto[0], "-sobrenome", sobrenome],
     capture_output=True,
     text=True
 )
-
-print("Resultado da execução:")
-print(process.stdout)
-print(process.stderr)

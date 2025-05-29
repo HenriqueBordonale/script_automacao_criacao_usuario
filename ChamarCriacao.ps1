@@ -1,20 +1,30 @@
-# Esse é o wrapper que você pode chamar para iniciar o script com as credenciais administrativas
 param (
     [string]$OrigUser,
-    [string]$NewUser
+    [string]$NewUser,
+    [string]$codigo,
+    [string]$email,
+    [string]$nome,
+    [string]$sobrenome
 )
 
-Write-Output "Credenciais que pegou no script1: $OrigUser"
-Write-Output "Credenciais que pegou no script1: $NewUser"
-# Cria o objeto de credenciais
+Write-Output "Parâmetros recebidos:"
+Write-Output "OrigUser: $OrigUser"
+Write-Output "NewUser: $NewUser"
+Write-Output "Codigo: $codigo"
+Write-Output "Email: $email"
+Write-Output "Nome completo: $nome"
+Write-Output "Sobrenome: $sobrenome"
+
+# Solicita as credenciais administrativas
 $Credenciais = Get-Credential
 
+# Caminho do script a ser chamado
 $scriptPath = "D:\documents\Script_Criacao_Usuario\CriarUsuario.ps1"
 
-# Monta a linha de argumentos corretamente
-$argumentos = "-File `"$scriptPath`" -OrigUser `"$OrigUser`" -NewUser `"$NewUser`""
+# Argumentos a serem passados para o script destino
+$argumentos = "-File `"$scriptPath`" -OrigUser `"$OrigUser`" -NewUser `"$NewUser`" -codigo `"$codigo`" -email `"$email`" -nome `"$nome`" -sobrenome `"$sobrenome`""
 
-# Executa com as credenciais
+# Executa o script com as credenciais fornecidas
 Start-Process "powershell.exe" `
     -Credential $Credenciais `
     -ArgumentList $argumentos `

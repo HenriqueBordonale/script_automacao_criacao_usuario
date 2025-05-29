@@ -1,6 +1,10 @@
 param (
     [string]$OrigUser,
-    [string]$NewUser
+    [string]$NewUser,
+    [string]$codigo,
+    [string]$email,
+    [string]$nome,
+    [string]$sobrenome
 )
 Write-Output "Credenciais que pegou: $OrigUser"
 Write-Output "Credenciais que pegou: $NewUser"
@@ -12,15 +16,20 @@ $UserOU = $User.DistinguishedName -replace "^CN=[^,]+,", ""
 Write-Output "Usuario modelo esta na OU: $UserOU"
 
 # Criar novo usuário na mesma OU
-New-ADUser -Name $NewUser `
+New-ADUser -Name "$nome $sobrenome" `
            -SamAccountName $NewUser `
            -UserPrincipalName "$NewUser@unaerpnet.br" `
            -Path $UserOU `
            -Title $User.Title `
            -Department $User.Department `
            -Enabled $true `
+           -Description $codigo `
+           -OtherAttributes @{mail = $email} `
+           -GivenName $nome `
+           -Surname $sobrenome `
+           -DisplayName "$nome $sobrenome" `
            -AccountPassword (ConvertTo-SecureString "SenhaForte123!" -AsPlainText -Force)
-
+           
 Write-Output "Usuario '$NewUser' criado na mesma OU de '$OrigUser'"
 
 # Adicionar o novo usuário aos mesmos grupos do usuário modelo
