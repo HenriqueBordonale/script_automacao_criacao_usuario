@@ -37,9 +37,10 @@ def identificar_sobrenome(nomeInput):
     return ' '.join(nome_separado)
 
 
-confirmarUsuario = input(f"Deseja manter o usuário: {username}? [S/N]")
+confirmarUsuario = input(f"Deseja manter o usuário: {username}? [S/N]").lower()
 if(confirmarUsuario == "n"):
-    username = input("Insira o usuário desejado: ")
+    username = input("Insira o usuário desejado: ").lower()
+    print(f"Usuário: {username}")
 
 nomeCompleto = identificar_sobrenome(nome).split()
 sobrenome = ' '.join(nomeCompleto[1:]) if len(nomeCompleto) > 1 else ''
@@ -50,10 +51,10 @@ print(f"Usuário: {username}")
 print(f"Endereço de E-mail: {email}")
 print(f"Código Funcional: {codigoFun}")
 print(f"Usuário a copiar: {userACopiar}")
-confirmCriacao = input("Deseja confirmar a criação? [S/N]").lower()
+confirEmail = input("Deseja confirmar a criação? [S/N]").lower()
 
 
-if (confirmarUsuario == "s"):
+if (confirEmail == "s"):
     process = subprocess.run(
     ["powershell", "-File", "ChamarCriacao.ps1", "-OrigUser", userACopiar, "-NewUser", username,"-codigo", codigoFun, "-email", email, "-nome", nomeCompleto[0], "-sobrenome", sobrenome],
     capture_output=True,

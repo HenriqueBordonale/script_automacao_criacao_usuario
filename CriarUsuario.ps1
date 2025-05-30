@@ -7,7 +7,7 @@ param (
     [string]$sobrenome
 )
 
-$dataHoje = (Get-Date).ToString("ddMMyyyy")
+$senha = -join ((0..9) | Get-Random -Count 8)
 
 Write-Output "Credenciais que pegou: $OrigUser"
 Write-Output "Credenciais que pegou: $NewUser"
@@ -30,10 +30,11 @@ New-ADUser -Name "$nome $sobrenome" `
            -GivenName $nome `
            -Surname $sobrenome `
            -DisplayName "$nome $sobrenome" `
-           -AccountPassword (ConvertTo-SecureString "$dataHoje" -AsPlainText -Force)
+           -AccountPassword (ConvertTo-SecureString "$senha" -AsPlainText -Force)
            
 Write-Output "Usuario '$NewUser' criado na mesma OU de '$OrigUser'"
 
+Set-Content -Path "D:\documents\Script_Criacao_Usuario\senhaGerada.txt" -Value $senha
 # Adicionar o novo usuário aos mesmos grupos do usuário modelo
 foreach ($Group in $User.MemberOf) {
     Add-ADGroupMember -Identity $Group -Members $NewUser
@@ -41,4 +42,4 @@ foreach ($Group in $User.MemberOf) {
 }
 
 Write-Output "Processo concluido! Usuario '$NewUser' copiado com sucesso."
-Write-Output "Usuário $NewUser com a senha $dataHoje criados com sucesso!"
+Write-Output "Usuário $NewUser com a senha $senha criados com sucesso!"
